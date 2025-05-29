@@ -42,6 +42,61 @@ const Demo = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+   // Vapi AI voice agent snippet
+  useEffect(() => {
+    if (!demoRef.current) return;
+
+    var vapiInstance = null;
+    const assistant = "<33213eff-d8a9-41bf-b394-7487a2f8f5a9>"; // substitute your assistant ID
+    const apiKey = "<61e6d51e-4990-4f1a-81c5-322ee3d44293>"; // substitute your public API key
+    const buttonConfig = {const buttonConfig = {
+  position: "bottom-right", // "bottom" | "top" | "left" | "right" | "top-right" | "top-left" | "bottom-left" | "bottom-right"
+  offset: "40px", // decide how far the button should be from the edge
+  width: "50px", // min-width of the button
+  height: "50px", // height of the button
+  idle: { // button state when the call is not active.
+    color: `rgb(93, 254, 202)`, 
+    type: "pill", // or "round"
+    title: "Have a quick question?", // only required in case of Pill
+    subtitle: "Talk with our AI assistant", // only required in case of pill
+    icon: `https://unpkg.com/lucide-static@0.321.0/icons/phone.svg`,
+  },
+  loading: { // button state when the call is connecting
+    color: `rgb(93, 124, 202)`,
+    type: "pill", // or "round"
+    title: "Connecting...", // only required in case of Pill
+    subtitle: "Please wait", // only required in case of pill
+    icon: `https://unpkg.com/lucide-static@0.321.0/icons/loader-2.svg`,
+  },
+  active: { // button state when the call is in progress or active.
+    color: `rgb(255, 0, 0)`,
+    type: "pill", // or "round"
+    title: "Call is in progress...", // only required in case of Pill
+    subtitle: "End the call.", // only required in case of pill
+    icon: `https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg`,
+  },
+};
+};
+
+    (function(d, t) {
+      var g = document.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode!.insertBefore(g, s);
+
+      g.onload = function() {
+        // @ts-ignore
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistant,
+          config: buttonConfig,
+          container: demoRef.current!
+        });
+      };
+    })(document, 'script');
+  }, []);
 
   const scrollToSection = useCallback((sectionId: string) => {
     // If we're not on the home page, navigate to home first
