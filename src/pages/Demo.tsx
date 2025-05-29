@@ -1,4 +1,4 @@
-
+import React, { useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -6,13 +6,13 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Phone, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 const Demo = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const demoRef = useRef<HTMLDivElement>(null);
+  
   // Animation variants
   const fadeUpVariants = {
     hidden: {
@@ -42,14 +42,14 @@ const Demo = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
-   // Vapi AI voice agent snippet
+   
   useEffect(() => {
-    if (!demoRef.current) return;
+    if (typeof window === 'undefined' || !demoRef.current) return;
 
-    var vapiInstance = null;
-    const assistant = "<33213eff-d8a9-41bf-b394-7487a2f8f5a9>"; // substitute your assistant ID
-    const apiKey = "<61e6d51e-4990-4f1a-81c5-322ee3d44293>"; // substitute your public API key
-    const buttonConfig = {const buttonConfig = {
+    let vapiInstance: any = null;
+    const assistant   = '<33213eff-d8a9-41bf-b394-7487a2f8f5a9>';
+    const apiKey      = process.env.REACT_APP_VAPI_KEY;
+    const buttonConfig = {
   position: "bottom-right", // "bottom" | "top" | "left" | "right" | "top-right" | "top-left" | "bottom-left" | "bottom-right"
   offset: "40px", // decide how far the button should be from the edge
   width: "50px", // min-width of the button
@@ -76,21 +76,19 @@ const Demo = () => {
     icon: `https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg`,
   },
 };
-};
 
     (function(d, t) {
-      var g = document.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-      g.defer = true;
-      g.async = true;
+      const g = document.createElement(t);
+      const s = d.getElementsByTagName(t)[0];
+      g.src   = 'https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js';
+      g.defer = g.async = true;
       s.parentNode!.insertBefore(g, s);
 
-      g.onload = function() {
+      g.onload = () => {
         // @ts-ignore
         vapiInstance = window.vapiSDK.run({
-          apiKey: apiKey,
-          assistant: assistant,
+          apiKey,
+          assistant,
           config: buttonConfig,
           container: demoRef.current!
         });
